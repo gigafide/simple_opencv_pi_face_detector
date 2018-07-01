@@ -17,12 +17,18 @@ while True:
     # take the frame, convert it to black and white, and look for facial features
     ret, frame = video_capture.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # use appropriate flag based on version of OpenCV
+    if int(cv2.__version__.split('.')[0]) >= 3:
+        cv_flag = cv2.CASCADE_SCALE_IMAGE
+    else:
+        cv_flag = cv2.cv.CV_HAAR_SCALE_IMAGE
+
     faces = faceCascade.detectMultiScale(
         gray,
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30),
-        flags=cv2.CASCADE_SCALE_IMAGE
+        flags=cv_flag
     )
 
     #for each face, draw a green rectangle around it and append to the image
